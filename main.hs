@@ -69,20 +69,5 @@ aux _ = False
 -- Extra 1
 
 -- Extra 2
-data Edo2 = Q00 | Q01 | Q0F | Q0R Edo2 deriving Show
-type Conf2 = ([Simbolo], Edo2, [Simbolo])
-delta2 :: Conf2 -> Conf2 
-delta2 (l, Q00, []) = (l, Q0F, [])
-delta2 (l, Q00, (r:rs)) = ((r:l), Q01, rs)
-
-delta2 (l, Q01, (r:rs)) = ((r:l), Q00, rs)
-
-delta2 (l, q, r) = (l, (Q0R q), r)
-
-delta_estrella2 :: Conf2 -> Conf2
-delta_estrella2 (l, Q0F, r) = (l, Q0F, r)
-delta_estrella2 (l, (Q0R q), r) = (l, q, r)
-
-delta_estrella2 conf = let next = delta2 conf in delta_estrella2 next
 
 -- Extra 3
