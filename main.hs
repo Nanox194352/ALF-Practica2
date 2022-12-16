@@ -46,16 +46,16 @@ delta_estrella conf = let next = delta conf in delta_estrella next
 
 -- Actividad 6
 -- Ejemplos de aceptación:
-aceptado2 = ([] , Q0 ,[A,B])
-aceptado1 = ([] , Q0 ,[A,A,B,B])
-aceptado3 = ([] , Q0 ,[A,A,A,A,B,B,B,B])
-aceptado4 = ([] , Q0 ,[A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A
-                      ,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B])
+aceptado2 = [A,B]
+aceptado1 = [A,A,B,B]
+aceptado3 = [A,A,A,A,B,B,B,B]
+aceptado4 = [A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A
+            ,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B]
 -- Ejemplos de rechazados:
-rechazado1 = ([] , Q0 ,[A])
-rechazado2 = ([] , Q0 ,[B])
-rechazado3 = ([] , Q0 ,[A,B,B,B])
-rechazado4 = ([] , Q0 ,[B,B,B,B])
+rechazado1 = [A]
+rechazado2 = [B]
+rechazado3 = [A,B,B,B]
+rechazado4 = [B,B,B,B]
 
 -- Actividad 7
 acepta :: Conf -> Bool
@@ -66,26 +66,28 @@ aux (_, QF, _) = True
 aux _ = False
 
 -- Extra 1
-data Lista a = Empty | Cons (Lista Simbolo) Simbolo
+data Lista = Empty | Cons Simbolo Lista
 
--- instance Show Lista a where
---     show (Cons x xs) = show xs ++ "," ++ show x ++"]" 
---     show (Cons x []) = "[" ++ show x 
+instance Show Lista where
+    show Empty = "[]"
+    show l = "["++ (show_aux l) ++"]"
 
--- Para comparar lista
-auxDos :: [Simbolo] -> Bool
-auxDos (_:_) = True 
-auxDos [] = False
+show_aux :: Lista -> String
+show_aux (Cons x (Empty)) = show x
+show_aux (Cons x xs) = (show_aux xs) ++ "," ++ show x
 
 -- Pasamos de cadena a lista en sigma
 transforma :: String -> [Simbolo]
 transforma ('a':xs) = A : transforma xs
 transforma ('b':xs) = B : transforma xs
-transforma (_) = []
+transforma _ = []
 
 -- Validamos que este en sigma
 validaSigma :: String -> Bool
-validaSigma str = auxDos (transforma str)
+validaSigma [] = True
+validaSigma ('a':xs) = validaSigma xs
+validaSigma ('b':xs) = validaSigma xs
+validaSigma _ = False
 
 -- Validamos si esta en el Lenguaje
 valida :: String -> Bool
@@ -107,4 +109,3 @@ delta_estrella2 (l, Q0F, r) = (l, Q0F, r)
 delta_estrella2 (l, (Q0R q), r) = (l, q, r)
 
 delta_estrella2 conf = let next = delta2 conf in delta_estrella2 next
--- Extra 3
