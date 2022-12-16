@@ -40,11 +40,11 @@ delta_estrella conf = let next = delta conf in delta_estrella next
 -- Actividad 7
 
 acepta :: Conf -> Bool
-acepta (_, QF, _) = True
-acepta (_, (QR _), _) = False
+acepta conf = aux (delta_estrella conf)
 
-acepta conf = acepta (delta_estrella conf)
-
+aux :: Conf -> Bool 
+aux (_, QF, _) = True
+aux _ = False
 -- Extra 1
 
 -- Extra 2
