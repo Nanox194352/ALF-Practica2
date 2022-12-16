@@ -46,17 +46,43 @@ delta_estrella (l, (QR q), r) = (l, q, r)
 delta_estrella conf = let next = delta conf in delta_estrella next
 
 -- Actividad 6
+-- Ejemplos de aceptación:
+aceptado2 = ([] , Q0 ,[A,B])
+aceptado1 = ([] , Q0 ,[A,A,B,B])
+aceptado3 = ([] , Q0 ,[A,A,A,A,B,B,B,B])
+aceptado4 = ([] , Q0 ,[A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A
+                      ,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B,B])
+-- Ejemplos de rechazados:
+rechazado1 = ([] , Q0 ,[A])
+rechazado2 = ([] , Q0 ,[B])
+rechazado3 = ([] , Q0 ,[A,B,B,B])
+rechazado4 = ([] , Q0 ,[B,B,B,B])
 
 -- Actividad 7
-
 acepta :: Conf -> Bool
-acepta (_, QF, _) = True
-acepta (_, (QR _), _) = False
+acepta conf = aux (delta_estrella conf)
 
-acepta conf = acepta (delta_estrella conf)
+aux :: Conf -> Bool 
+aux (_, QF, _) = True
+aux _ = False
 
 -- Extra 1
 
 -- Extra 2
+data Edo2 = Q00 | Q01 | Q0F | Q0R Edo2 deriving Show
+type Conf2 = ([Simbolo], Edo2, [Simbolo])
+delta2 :: Conf2 -> Conf2 
+delta2 (l, Q00, []) = (l, Q0F, [])
+delta2 (l, Q00, (r:rs)) = ((r:l), Q01, rs)
+
+delta2 (l, Q01, (r:rs)) = ((r:l), Q00, rs)
+
+delta2 (l, q, r) = (l, (Q0R q), r)
+
+delta_estrella2 :: Conf2 -> Conf2
+delta_estrella2 (l, Q0F, r) = (l, Q0F, r)
+delta_estrella2 (l, (Q0R q), r) = (l, q, r)
+
+delta_estrella2 conf = let next = delta2 conf in delta_estrella2 next
 
 -- Extra 3
