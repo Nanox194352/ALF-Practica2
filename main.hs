@@ -67,6 +67,30 @@ aux (_, QF, _) = True
 aux _ = False
 
 -- Extra 1
+data Lista a = Empty | Cons (Lista Simbolo) Simbolo
+
+-- instance Show Lista a where
+--     show (Cons x xs) = show xs ++ "," ++ show x ++"]" 
+--     show (Cons x []) = "[" ++ show x 
+
+-- Para comparar lista
+auxDos :: [Simbolo] -> Bool
+auxDos (_:_) = True 
+auxDos [] = False
+
+-- Pasamos de cadena lista
+transforma :: String -> [Simbolo]
+transforma ('a':xs) = A : transforma xs
+transforma ('b':xs) = B : transforma xs
+transforma (_) = []
+
+-- Validamos que este en sigma
+validaSigma :: String -> Bool
+validaSigma str = auxDos (transforma str)
+
+-- Validamos si esta en el Lenguaje
+valida :: String -> Bool
+valida str = acepta ([],Q0,(transforma str))
 
 -- Extra 2
 
