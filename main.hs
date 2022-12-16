@@ -78,7 +78,7 @@ auxDos :: [Simbolo] -> Bool
 auxDos (_:_) = True 
 auxDos [] = False
 
--- Pasamos de cadena lista
+-- Pasamos de cadena a lista en sigma
 transforma :: String -> [Simbolo]
 transforma ('a':xs) = A : transforma xs
 transforma ('b':xs) = B : transforma xs
